@@ -3,26 +3,83 @@
 {% block content %}
 <div class='container text-center'>
 
+  <h2>Charts</h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <h3>Line and Bar Chart</h3>
+        <canvas id="myChart" width="400" height="400"></canvas>
+        <script>
+          const ctx = document.getElementById("myChart").getContext("2d");
+          const close = {{ close|safe }}
+          const volume = {{ close|safe }}
+          const mixedChart = new Chart(ctx, {
+            data: {
+              datasets: [{
+                type: 'bar',
+                label: 'Bar Dataset',
+                data: [close],
+                  backgroundColor: [
+                    'rgba(252, 57, 37, 0.69)'
+                  ],
+                order: 2
+              }, {
+                  type: 'line',
+                  label: 'Line Dataset',
+                  data: [volume],
+                  backgroundColor: [
+                    'rgba(0, 70, 192, 0.69)'
+                  ],
+                  order: 1
+              }],
+            labels: ['January', 'February', 'March', 'April']
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+
+        </script>
+      </div>
+      <div class="col-sm-6">
+        DropDown
+      </div>
+    </div>
+  </div>
+
   <h2>Table Visualization</h2>
+  <a href='upload'><button class="btn btn-success mb-3 mt-3">Add New Data</button></a>
 
   <table class="table table-dark table-striped">
     <thead>
       <tr>
-        {% for data in data.columns %}
-            <th scope="col">{{data}}</th>
-        {% endfor %}
+            <th scope="col">Date</th>
+            <th scope="col">Trade Code</th>
+            <th scope="col">High</th>
+            <th scope="col">Low</th>
+            <th scope="col">Open</th>
+            <th scope="col">Close</th>
+            <th scope="col">Volume</th>
+            <th></th>
+            <th></th> 
       </tr>
     </thead>
     <tbody>
-      {% for row in rows %}
+      {% for data in data %}
         <tr>
-            <td>{{row.date}}</td>
-            <td>{{row.trade_code}}</td>
-            <td>{{row.high}}</td>
-            <td>{{row.low}}</td>
-            <td>{{row.open}}</td>
-            <td>{{row.close}}</td>
-            <td>{{row.volume}}</td>
+            <td contenteditable='true'>{{data.date}}</td>
+            <td contenteditable='true'>{{data.trade_code}}</td>
+            <td contenteditable='true'>{{data.high}}</td>
+            <td contenteditable='true'>{{data.low}}</td>
+            <td contenteditable='true'>{{data.open}}</td>
+            <td contenteditable='true'>{{data.close}}</td>
+            <td contenteditable='true'>{{data.volume}}</td>
+            <td><a href='upload/{{data.id}}'><button class='btn btn-primary'>Update</button</a></td>
+            <td><a class="btn btn-danger" href='delete/{{data.id}}'>Delete</a></td>
         </tr>
       {% endfor %}
     </tbody>
