@@ -1,9 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from django.core import serializers
 from .models import StockData
 from .forms import StockCreate
-from json import dumps
+from datetime import datetime
 
 # Create your views here.
 
@@ -15,12 +14,11 @@ def index(request):
     volume = []
 
     for value in data:
-        date.append(value.date)
+        date.append(value.date.strftime("%m/%d/%Y"))
         close.append(value.close)
         volume.append(value.volume)
 
     print(date)
-    dataJSON = serializers.serialize('json', data)
     return render(request, 'index.html', {'data': data, 'date': date, 'close': close, 'volume': volume})
 
 def upload(request):

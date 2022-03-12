@@ -6,19 +6,20 @@
   <h2>Charts</h2>
   <div class="container">
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-12">
         <h3>Line and Bar Chart</h3>
         <canvas id="myChart" width="400" height="400"></canvas>
         <script>
           const ctx = document.getElementById("myChart").getContext("2d");
+          const date = {{ date|safe }}
           const close = {{ close|safe }}
-          const volume = {{ close|safe }}
+          const volume = {{ volume|safe }}
           const mixedChart = new Chart(ctx, {
             data: {
               datasets: [{
                 type: 'bar',
                 label: 'Bar Dataset',
-                data: [close],
+                data: close,
                   backgroundColor: [
                     'rgba(252, 57, 37, 0.69)'
                   ],
@@ -26,13 +27,13 @@
               }, {
                   type: 'line',
                   label: 'Line Dataset',
-                  data: [volume],
+                  data: volume,
                   backgroundColor: [
                     'rgba(0, 70, 192, 0.69)'
                   ],
                   order: 1
               }],
-            labels: ['January', 'February', 'March', 'April']
+            labels: date
   },
   options: {
     scales: {
@@ -44,9 +45,6 @@
 });
 
         </script>
-      </div>
-      <div class="col-sm-6">
-        DropDown
       </div>
     </div>
   </div>
