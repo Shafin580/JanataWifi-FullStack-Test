@@ -14,34 +14,44 @@
           const date = {{ date|safe }}
           const close = {{ close|safe }}
           const volume = {{ volume|safe }}
-          const mixedChart = new Chart(ctx, {
-            data: {
-              datasets: [{
-                type: 'bar',
-                label: 'Bar Dataset',
+          const tradeCode = {{ trade_code|safe }}
+          const data = {
+            labels: date,
+            datasets: [
+              {
+                label: 'Volume',
+                data: volume,
+                borderColor: 'rgba(252, 57, 37, 0.69)',
+                backgroundColor: 'rgba(252, 57, 37, 0.69)',
+                stack: 'combined',
+                type: 'bar'
+              },
+              {
+                label: 'Close',
                 data: close,
-                  backgroundColor: [
-                    'rgba(252, 57, 37, 0.69)'
-                  ],
-                order: 2
-              }, {
-                  type: 'line',
-                  label: 'Line Dataset',
-                  data: volume,
-                  backgroundColor: [
-                    'rgba(0, 70, 192, 0.69)'
-                  ],
-                  order: 1
-              }],
-            labels: date
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true
-      }
-    }
-  }
+                borderColor: 'rgba(0, 70, 192, 0.69)',
+                backgroundColor: 'rgba(0, 70, 192, 0.69)',
+                stack: 'combined'
+              }
+            ]
+          }
+          const mixedChart = new Chart(ctx, {
+          
+            type: 'line',
+            data: data,
+            options: {
+              plugins: {
+                title: {
+                  display: true,
+                  text: 'Line/Bar Chart'
+                }
+              },
+              scales: {
+                y: {
+                  stacked: true
+                }
+              }
+            },
 });
 
         </script>

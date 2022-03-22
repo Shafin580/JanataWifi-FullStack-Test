@@ -12,14 +12,15 @@ def index(request):
     date = []
     close = []
     volume = []
+    trade_code = []
 
     for value in data:
         date.append(value.date.strftime("%m/%d/%Y"))
         close.append(value.close)
         volume.append(value.volume)
+        trade_code.append(value.trade_code)
 
-    print(date)
-    return render(request, 'index.html', {'data': data, 'date': date, 'close': close, 'volume': volume})
+    return render(request, 'index.html', {'data': data, 'date': date, 'close': close, 'volume': volume, 'trade_code': trade_code})
 
 def upload(request):
     upload = StockCreate()
