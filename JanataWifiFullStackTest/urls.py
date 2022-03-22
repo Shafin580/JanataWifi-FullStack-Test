@@ -20,6 +20,7 @@ from JanatawifiFullStackTestApp import views as test_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', test_views.index),
+    path('create', test_views.create),
     path('upload', test_views.upload),
     path('upload/<int:stock_id>', test_views.update),
     path('delete/<int:stock_id>', test_views.delete)

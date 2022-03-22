@@ -6,55 +6,17 @@
   <h2>Charts</h2>
   <div class="container">
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-9">
         <h3>Line and Bar Chart</h3>
         <canvas id="myChart" width="400" height="400"></canvas>
-        <script>
-          const ctx = document.getElementById("myChart").getContext("2d");
-          const date = {{ date|safe }}
-          const close = {{ close|safe }}
-          const volume = {{ volume|safe }}
-          const tradeCode = {{ trade_code|safe }}
-          const data = {
-            labels: date,
-            datasets: [
-              {
-                label: 'Volume',
-                data: volume,
-                borderColor: 'rgba(252, 57, 37, 0.69)',
-                backgroundColor: 'rgba(252, 57, 37, 0.69)',
-                stack: 'combined',
-                type: 'bar'
-              },
-              {
-                label: 'Close',
-                data: close,
-                borderColor: 'rgba(0, 70, 192, 0.69)',
-                backgroundColor: 'rgba(0, 70, 192, 0.69)',
-                stack: 'combined'
-              }
-            ]
-          }
-          const mixedChart = new Chart(ctx, {
-          
-            type: 'line',
-            data: data,
-            options: {
-              plugins: {
-                title: {
-                  display: true,
-                  text: 'Line/Bar Chart'
-                }
-              },
-              scales: {
-                y: {
-                  stacked: true
-                }
-              }
-            },
-});
-
-        </script>
+        
+      </div>
+      <div class="col-sm-3">
+        <select class="form-select" aria-label="Default select example" id="selectedColumn" onchange="handleChange()">
+          <option selected value="close">Close</option>
+          <option value="high">High</option>
+          <option value="low">Low</option>
+        </select>
       </div>
     </div>
   </div>
@@ -112,5 +74,84 @@
   </table>
 
 </div>
+
+<script>
+  var ctx = document.getElementById("myChart").getContext("2d");
+  var date = {{ date|safe }}
+  var close = {{ close|safe }}
+  var volume = {{ volume|safe }}
+  var tradeCode = {{ trade_code|safe }}
+  var high = {{ high|safe }}
+  var low = {{ low|safe }}
+  var lineData = close;
+  var mixedChart;
+  var select;
+  var selectedValue = "close"
+  function handleChange(){
+    select = document.getElementById('selectedColumn');
+    selectedValue = select.options[select.selectedIndex].value;
+    if(selectedValue === "close"){
+      lineData = close;
+      destroyChart(mixedChart);
+      drawChart(lineData, selectedValue);
+    }
+    else if(selectedValue === "high"){
+      lineData = high;
+      destroyChart(mixedChart);
+      drawChart(lineData, selectedValue);
+    }
+    else if(selectedValue === "low"){
+      lineData = low;
+      destroyChart(mixedChart);
+      drawChart(lineData, selectedValue);
+    }
+  }
+  function drawChart(lineData,  lineLabel){
+    var data = {
+      labels: date,
+      datasets: [
+        {
+          label: 'Volume',
+          data: volume,
+          borderColor: 'rgba(252, 57, 37, 0.69)',
+          backgroundColor: 'rgba(252, 57, 37, 0.69)',
+          stack: 'combined',
+          type: 'bar'
+        },
+        {
+          label: lineLabel,
+          data: lineData,
+          borderColor: 'rgba(0, 70, 192, 0.69)',
+          backgroundColor: 'rgba(0, 70, 192, 0.69)',
+          stack: 'combined'
+        }
+      ]
+    }
+    mixedChart = new Chart(ctx, {
+    
+      type: 'line',
+      data: data,
+      options: {
+        plugins: {
+          title: {
+            display: true,
+            text: 'Line/Bar Chart'
+          }
+        },
+        scales: {
+          y: {
+            stacked: true
+          }
+        }
+      },
+  });
+  }
+  drawChart(lineData, selectedValue);
+  function destroyChart(chart){
+    chart.destroy();
+  }
+  
+
+</script>
 
 {% endblock  %}
