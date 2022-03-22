@@ -10,7 +10,7 @@ import json
 # Create your views here.
 
 def create(request):
-    data = pd.read_csv('JanatawifiFullStackTestApp\data\stock_market_data.csv')
+    data = pd.read_csv('JanatawifiFullStackTestApp\static\data\stock_market_data.csv')
     json_records = data.reset_index().to_json(orient ='records')
     rowData = []
     rowData = json.loads(json_records)
