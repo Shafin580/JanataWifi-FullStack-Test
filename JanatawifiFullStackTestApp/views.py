@@ -3,24 +3,27 @@ from django.http import HttpResponse
 from .models import StockData
 from .forms import StockCreate
 from datetime import datetime
+from django.core.paginator import Paginator
 
 # Create your views here.
 
 def index(request):
 
-    data = StockData.objects.all()
+    data = Paginator(StockData.objects.all(), 50)
+    page = request.GET.get('page')
+    pagedData = data.get_page(page)
     date = []
     close = []
     volume = []
     trade_code = []
 
-    for value in data:
+    for value in pagedData:
         date.append(value.date.strftime("%m/%d/%Y"))
         close.append(value.close)
         volume.append(value.volume)
         trade_code.append(value.trade_code)
 
-    return render(request, 'index.html', {'data': data, 'date': date, 'close': close, 'volume': volume, 'trade_code': trade_code})
+    return render(request, 'index.html', {'date': date, 'close': close, 'volume': volume, 'trade_code': trade_code, 'pages': pagedData})
 
 def upload(request):
     upload = StockCreate()
